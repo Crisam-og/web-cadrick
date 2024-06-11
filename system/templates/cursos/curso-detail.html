@@ -1,0 +1,156 @@
+<div class="modal fade" id="curso-detail-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" id="curso-detail-modal-content">
+            <!-- El contenido se cargará aquí vía AJAX -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Información del curso -->
+                    <div class="row justify-content-center text-center">
+                        <div class="col-12">
+                            <img class="mb-3 img-fluid" src="{{ curso.get_image }}" alt="Imagen del curso" style="max-width: 400px; height: auto;">
+                        </div>
+                        <div class="col-12">
+                            <h4>{{ curso.nombre_curso }}</h4>
+                        </div>
+                        <div class="col-12">
+                            <p style="text-align:justify;">{{ curso.descripcion }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <p><strong>Inicio:</strong> {{ curso.fecha_de_inicio }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                            <p><strong>Horario:</strong> {{ curso.horario }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <p><strong>Duración:</strong> {{ curso.duracion  }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <p><strong>Costo:</strong> {{ curso.costo  }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                
+                                <p><strong>Capacitador:</strong> {{ curso.capacitador_id }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <strong>Temario:</strong><a href="{{ curso.get_document }}" target="_blank" > <li class="fas fa-file-download fa-lg"> </li> </a>                            
+                            </div>
+                        </div>
+
+                       
+                    </div>
+                    <!-- Otros campos -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Abre el modal y carga el contenido vía AJAX
+        $('.open-modal').on('click', function() {
+            var url = $(this).data('url');            
+            console.log('id'+ ' '+url);
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(data) {
+                    $('#curso-detail-modal-content').html($(data).find('#curso-detail-modal-content').html());
+                    $('#curso-detail-modal').modal('show');
+                    console.log('datos'+ ' '+data);
+                },
+                error: function() {
+                    alert('Error al cargar los detalles del curso.');
+                }
+                
+            });
+        });
+    
+        // Cierra el modal
+        $('#curso-detail-modal').on('hidden.bs.modal', function () {
+            $('#curso-detail-modal-content').empty();
+        });
+    });
+
+    $(function(){
+        $('#data').DataTable({
+            responsive: true,
+            autoWidth: false,
+        });
+    });
+    
+  </script>
+<style>
+    #curso-detail-modal-content .modal-body {
+        padding: 20px;
+    }
+    
+    #curso-detail-modal-content .modal-header {
+        border-bottom: none;
+    }
+    
+    #curso-detail-modal-content .modal-footer {
+        border-top: none;
+        justify-content: center;
+    }
+    
+    #curso-detail-modal-content img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    #curso-detail-modal-content h4 {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+    
+    #curso-detail-modal-content p {
+        margin-top: 10px;
+        font-size: 1rem;
+        text-align: justify;
+    }
+    
+    #curso-detail-modal-content .row.mt-4 .col-12 {
+        margin-bottom: 10px;
+    }
+    
+    #curso-detail-modal-content .row.mt-4 .text-left {
+        text-align: left;
+    }
+    
+    #curso-detail-modal-content .row.mt-4 .text-right {
+        text-align: right;
+    }
+    
+</style>
+
+ 
+        
+       

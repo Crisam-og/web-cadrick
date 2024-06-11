@@ -1,0 +1,28 @@
+{% load static %}
+<!-- ======= Header ======= -->
+ <header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+      <a href="{% url "index" %}" class="logo d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <img src="{% static "lib/website-v1/assets/img/logo_cadrick_sf.gif" %}" alt=""> 
+        <h1>Cadrick Ingenieros<span>.</span></h1>
+      </a>
+
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+      
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="{% url "index" %}" {% if request.path == "/website/index/" %}class="active"{% endif %}>Inicio</a></li>
+          <li><a href="{% url "nosotros" %}" {% if request.path == "/website/nosotros/" %}class="active"{% endif %}>Nosotros</a></li>
+          <li><a href="services.html">Servicios</a></li>
+          <li><a href="projects.html">Proyectos</a></li>
+          <li><a href="{% url "curso-list" %}" {% if request.path == "/website/cursos/list/" %}class="active"{% endif %}>Cursos</a></li>
+          <li><a href="contact.html">Contactanos</a></li>
+        </ul>
+      </nav><!-- .navbar -->
+      
+
+    </div>
+  </header><!-- End Header -->

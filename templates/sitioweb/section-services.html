@@ -1,0 +1,27 @@
+ <!-- ======= Services Section ======= -->
+ <section id="services" class="services section-bg">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-header">
+        <h2>Servicios</h2>
+        <p>
+          "Ofrecemos servicios integrales de construcción, desde diseño hasta gestión de proyectos. Nuestro enfoque es garantizar calidad y satisfacción del cliente en cada etapa del proceso."</p>
+      </div>
+
+      <div class="row gy-4">
+        {% for s in service  %}
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="service-item  position-relative">
+            <div class="icon">
+              <i class="fa-solid fa-mountain-city"></i>
+            </div>
+            <h3>{{ s.title }} </h3>
+            <p> {{ s.description }} </p>
+            <a href="service-details.html" class="readmore stretched-link">Learn more <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div><!-- End Service Item -->
+        {% endfor %}
+      </div>
+
+    </div>
+  </section><!-- End Services Section -->
