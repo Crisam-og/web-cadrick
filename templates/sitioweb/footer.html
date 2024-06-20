@@ -9,9 +9,9 @@
             <div class="footer-info">
               <h3>CadrickIngenieros</h3>
               <p>
-                <i class="bi bi-geo-alt-fill"></i> {{ config.direccion }} <br><br>
-                <i class="bi bi-telephone-fill"></i> <strong>Telefono:</strong> {{ config.numero_telefono }}  <br>
-                <i class="bi bi-envelope-fill"></i> <strong>Correo:</strong> {{ config.correo }} <br>
+                <i class="bi bi-geo-alt-fill"></i> <strong>Dirección:</strong> {{ comp.direccion }} <br><br>
+                <i class="bi bi-telephone-fill"></i> <strong>Telefono:</strong> {{ comp.telefono }}  <br>
+                <i class="bi bi-envelope-fill"></i> <strong>Correo:</strong> {{ comp.email }} <br>
               </p>
            
               <div class="social-links d-flex mt-3">
@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <a href="{{ config.url_whatsapp }}" class="btn-wsp" target="_blank">
+    <a href="{{ comp.url_whatsapp }}" class="btn-wsp" target="_blank">
       <i class="fab fa-whatsapp"></i>
     </a>  
   

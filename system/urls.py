@@ -1,6 +1,6 @@
 from django.urls import path, include
 from system.views.servicios.views import *
-from system.views.nosotros.views import *
+from system.views.publicidad.views import *
 from system.views.capacitadores.views import *
 from system.views.cursos.views import *
 from system.views.clientes.views import *
@@ -9,6 +9,8 @@ from system.views.proyectos.views import *
 from system.views.home.views import *
 from system.views.inscripciones.views import *
 from system.views.configuraciones.views import *
+from system.views.publicidad.views import *
+from system.views.tiposervicio.views import *
 
 from django.conf import settings
 from django.contrib.staticfiles.urls import static
@@ -22,10 +24,10 @@ urlpatterns = [
     path('servicios/delete/<uuid:pk>/', ServicioDeleteView.as_view(), name='servicios_delete'),  
     
     
-    path('nosotros/list/', NosotrosListView.as_view(), name='nosotros_list'), 
-    path('nosotros/add/', NosotrosCreateView.as_view(), name='nosotros_create'),  
-    path('nosotros/edit/<uuid:pk>/', NosotrosUpdateView.as_view(), name='nosotros_update'),  
-    path('nosotros/delete/<uuid:pk>/', NosotrosDeleteView.as_view(), name='nosotros_delete'), 
+    path('tipo-servicio/list/', TipoServicioListView.as_view(), name='tservicios_list'), 
+    path('tipo-servicio/add/', TipoServicioCreateView.as_view(), name='tservicios_create'),  
+    path('tipo-servicio/edit/<uuid:pk>/', TipoServicioUpdateView.as_view(), name='tservicios_update'),  
+    path('tipo-servicio/delete/<uuid:pk>/', TipoServicioDeleteView.as_view(), name='tservicios_delete'), 
     
     path('capacitadores/list/', CapacitadorListView.as_view(), name='capacitador_list'), 
     path('capacitadores/add/', CapacitadorCreateView.as_view(), name='capacitador_create'),  
@@ -60,8 +62,11 @@ urlpatterns = [
     path('inscripciones/delete/<uuid:pk>/',  InscripcionesDeleteView.as_view(), name='inscripciones_delete'), 
     path('inscripciones/detalle-inscripcion/<uuid:id>/',  InscripcionDetailView.as_view(), name='inscripciones_detail'),
     
-    path('configuraciones/list/', ConfigListView.as_view(), name='config_list'), 
-    path('configuraciones/edit/<uuid:pk>/',  ConfigUpdateView.as_view(), name='config_update'),  
+    path('configuraciones/add/', CompaniaCreateView.as_view(), name='compania_create'), 
+    path('configuraciones/edit/',  CompaniaUpdateView.as_view(), name='compania_update'),  
+    
+    path('image-and-text/add/', GaleriaCreateView.as_view(), name='galeria_create'), 
+    path('image-and-text/edit/',  GaleriaUpdateView.as_view(), name='galeria_update'),  
     
      
 

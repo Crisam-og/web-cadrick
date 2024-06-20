@@ -4,8 +4,7 @@
 
       <div class="section-header">
         <h2>Servicios</h2>
-        <p>
-          "Ofrecemos servicios integrales de construcción, desde diseño hasta gestión de proyectos. Nuestro enfoque es garantizar calidad y satisfacción del cliente en cada etapa del proceso."</p>
+        <p> {{ publicidad.sub_section_servicios }} </p>
       </div>
 
       <div class="portfolio-isotope" data-portfolio-filter="*" data-portfolio-layout="masonry" data-portfolio-sort="original-order">
@@ -17,7 +16,7 @@
             <div class="portfolio-content h-100">
               <img src="{{ s.get_image }}" class="img-fluid" alt="">
               <div class="portfolio-info">
-                <h4>{{ s.nombre_servicio }} </h4>
+                <h4>{{ s.servicio_id }} </h4>
                 <p>{{ s.descripcion_servicio }}</p>
                 <a href="{{ s.get_image }}" title="{{ s.title }}" data-gallery="portfolio-gallery-remodeling" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                 <a href="project-details.html" title="Más información" class="details-link"><i class="bi bi-hand-index-thumb"></i></a>
@@ -28,6 +27,8 @@
         </div><!-- End Projects Container -->
 
       </div>
-
+      <div class="d-flex justify-content-center mt-4">
+        <a href="{% url 'servicios-list' %}" class="btn btn-primary">Ver más</a>
+    </div>
     </div>
   </section><!-- End Our Projects Section -->

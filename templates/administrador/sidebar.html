@@ -34,16 +34,28 @@
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                <a href="{% url 'nosotros_list' %}" class="nav-link">
-                  <i class='nav-icon far fa-building'></i>
+                
+              <li class="nav-item">
+                
+                <a href="{% url "compania_update" %}" class="nav-link">
+                 
+                  <i class='nav-icon fas fa-tools'></i>
+                  <span> 
+                  </span>
+                  <p>Configuraciones</p>
+                </a>
+              </li> 
+
+              <li class="nav-item">
+                <a href="{% url 'galeria_update' %}" class="nav-link">
+                  <i class='nav-icon fas fa-images'></i>
                   <span> 
                     
                   </span>
-                  <p>Nosotros</p>
+                  <p>Textos y Imagenes</p>
                 </a>
-              </li>
-
+              </li> 
+              
               <li class="nav-item">
                 <a href="{% url 'clientes_list' %}" class="nav-link">
                   <i class='nav-icon fas fa-user-friends'></i>
@@ -59,6 +71,15 @@
                   <span> 
                   </span>
                   <p>Equipo</p>
+                </a>
+              </li> 
+
+              <li class="nav-item">
+                <a href="{% url 'tservicios_list' %}" class="nav-link">
+                  <i class='nav-icon fas fa-clipboard-list'></i>
+                  <span> 
+                  </span>
+                  <p>Categoria de Servicio</p>
                 </a>
               </li> 
 
@@ -79,15 +100,9 @@
                   <p>Proyectos</p>
                 </a>
               </li> 
-
-              <li class="nav-item">
-                <a href="{% url "config_list" %}" class="nav-link">
-                  <i class='nav-icon fas fa-tools'></i>
-                  <span> 
-                  </span>
-                  <p>Configuraciones</p>
-                </a>
-              </li> 
+              
+              
+              
             </ul>
 
             <li class="nav-item">

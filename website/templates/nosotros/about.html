@@ -1,6 +1,7 @@
 {% extends "sitioweb/index.html" %}
 {% block title %}Nosotros{% endblock  %}
 {% load static %}
+{% load filters %}
 {% block content %}
 
   <main id="main">
@@ -22,14 +23,14 @@
       <div class="container" data-aos="fade-up">
 
         <div class="row position-relative">
-
-          <div class="col-lg-7 about-img" style="background-image: url({% static "lib/website-v1/assets/img/about.jpg" %} );"></div>
-
+          
+          <div class="col-lg-7 about-img" style="background-image: url({{ publicidad|get_image:'imagen_mision' }});"></div>
+          
           <div class="col-lg-7">
             <h3> {{ titleOne }} </h3>
            
             <div class="our-story">
-              <p style="text-align: justify;"> {{ nosotros.historia }} </p>
+              <p style="text-align: justify;"> {{ comp.historia }} </p>
             </div>
           </div>
           
@@ -45,7 +46,9 @@
       <div class="container" data-aos="fade-up">
 
         <div class="row justify-content-around gy-4">
-          <div class="col-lg-6 img-bg" style="background-image: url({% static "lib/website-v1/assets/img/alt-services.jpg" %});" data-aos="zoom-in" data-aos-delay="100"></div>
+         
+          <div class="col-lg-6 img-bg" style="background-image: url({{ publicidad|get_image:'imagen_vision' }});" data-aos="zoom-in" data-aos-delay="100"></div>
+          
 
           <div class="col-lg-5 d-flex flex-column justify-content-center">
             <h3>{{ titleTwo }}</h3>
@@ -54,7 +57,7 @@
               <i class="bi bi-flag flex-shrink-0"></i>
               <div>
                 <h4><a class="stretched-link">Misión</a></h4>
-                <p style="text-align: justify;"> {{ nosotros.mision }} </p>
+                <p style="text-align: justify;"> {{ comp.mision }} </p>
               </div>
             </div><!-- End Icon Box -->
 
@@ -62,7 +65,7 @@
               <i class="bi bi-graph-up flex-shrink-0"></i>
               <div>
                 <h4><a class="stretched-link">Visión</a></h4>
-                <p style="text-align: justify;"> {{ nosotros.vision }} </p>
+                <p style="text-align: justify;"> {{ comp.vision }} </p>
               </div>
             </div><!-- End Icon Box -->
         

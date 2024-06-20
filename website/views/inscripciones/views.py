@@ -41,8 +41,6 @@ class InscripcionesCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context ['detail'] = reverse_lazy('index')
+        context['comp'] = Compania.objects.first()
         context['action'] = 'add'
-        context['configuraciones'] = Configuraciones.objects.all()
-        context['config_dict'] = {config.nombre_config: config.valor for config in context['configuraciones']}
-        context['config'] = context['config_dict']
         return context

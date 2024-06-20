@@ -26,6 +26,12 @@ class ServiciosForm(ModelForm):
                     'cols': 3 
                     }
                 ),
+            'servicio_id': Select(
+                attrs={
+                    'class': 'form-control col-3',
+                    'style': 'width: 100%'
+                    }
+                ),
             'imagen': FileInput(
                 attrs={
                 'class': 'form-control-file',

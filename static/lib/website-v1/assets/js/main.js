@@ -209,6 +209,24 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   });
 
+  new Swiper(".swiper-publicidad", {
+    effect: "coverflow",
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: "auto",
+    coverflowEffect: {
+      rotate: 0,
+      stretch: 0,
+      depth: 100,
+      modifier: 2,
+      slideShadows: true,
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true
+    },
+  });
+
   /**
    * Initiate pURE cOUNTER
    */

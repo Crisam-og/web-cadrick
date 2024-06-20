@@ -23,10 +23,8 @@ class CursoListView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['configuraciones'] = Configuraciones.objects.all()
-        context['config_dict'] = {config.nombre_config: config.valor for config in context['configuraciones']}
-        context['config'] = context['config_dict']
         context['courses'] = Cursos.objects.all()
+        context['comp'] = Compania.objects.first()
         return context
     
 class CursoDetailView(DetailView):
@@ -46,8 +44,6 @@ class CursoDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['configuraciones'] = Configuraciones.objects.all()
         context['cursos'] = Cursos.objects.exclude(id=self.object.id)
-        context['config_dict'] = {config.nombre_config: config.valor for config in context['configuraciones']}
-        context['config'] = context['config_dict']
+        context['comp'] = Compania.objects.first()
         return context

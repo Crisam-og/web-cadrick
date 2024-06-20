@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 
 class NosotrosListView(ListView):
-    model = Nosotros
+    model = Compania
     template_name = 'nosotros/about.html'
 
     #create_url = 'servicios/create.html'
@@ -18,11 +18,10 @@ class NosotrosListView(ListView):
         return super().dispatch(request, *args, **kwargs)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titleOne'] = 'Historia'
+        context['titleOne'] = 'Acerca de nosotros'
         context['titleTwo'] = 'Nuestra misión y visión'
-        context['nosotros'] = Nosotros.objects.first()
+        context['comp'] = Compania.objects.first()
         context['team'] = Equipo.objects.all()
-        context['configuraciones'] = Configuraciones.objects.all()
-        context['config_dict'] = {config.nombre_config: config.valor for config in context['configuraciones']}
-        context['config'] = context['config_dict']
+        context['publicidad'] = Galeria.objects.first()
+
         return context

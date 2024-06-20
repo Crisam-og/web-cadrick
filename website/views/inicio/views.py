@@ -18,15 +18,14 @@ class IndexTemplateView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titleProyectos'] = 'Proyectos'
-        context['subtitleProyectos'] = 'Cada proyecto refleja nuestro compromiso con la excelencia, la innovación y la satisfacción del cliente.'
+        context['titleServi'] = 'Servicios'
         context['titleClients'] = 'Clientes'
         context['titleCursos'] = 'Cursos'
         context['proyec'] = Proyectos.objects.all()
         context['team'] = Equipo.objects.all()
-        context['courses'] = Cursos.objects.all().order_by('fecha_de_inicio')[:3] 
-        context['service'] = Servicios.objects.all()
+        context['courses'] = Cursos.objects.filter(estado=True).order_by('fecha_de_inicio')[:3] 
+        context['service'] = Servicios.objects.filter(estado=True)[:6] 
+        context['publicidad'] = Galeria.objects.first()
         context['client'] = Clientes.objects.all()
-        context['configuraciones'] = Configuraciones.objects.all()
-        context['config_dict'] = {config.nombre_config: config.valor for config in context['configuraciones']}
-        context['config'] = context['config_dict']
+        context['comp'] = Compania.objects.first()
         return context

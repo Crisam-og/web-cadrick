@@ -159,3 +159,5 @@ LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_URL = '/login/'
 AUTH_USER_MODEL = 'user.User'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+# SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
