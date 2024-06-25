@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 class TipoServicioListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
     model = TipoServicio
     template_name = 'tservicios/list.html'
-    permission_required = 'view_servicios'
+    permission_required = 'view_tiposervicio'
     #create_url = 'servicios/create.html'
     
     def dispatch(self, request, *args, **kwargs):
@@ -25,7 +25,7 @@ class TipoServicioCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,
     form_class = TipoServicioForm 
     template_name = 'tservicios/create.html' 
     success_url = reverse_lazy('tservicios_list')
-    permission_required = 'add_servicios'
+    permission_required = 'add_tiposervicio'
     url_redirect = success_url
     
     def dispatch(self, request, *args, **kwargs):
@@ -62,7 +62,7 @@ class TipoServicioUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,
     form_class = TipoServicioForm
     template_name = 'tservicios/create.html'
     success_url = reverse_lazy('tservicios_list')
-    permission_required = 'change_servicios'
+    permission_required = 'change_tiposervicio'
     url_redirect = success_url
     
     

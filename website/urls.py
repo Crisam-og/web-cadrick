@@ -14,6 +14,7 @@ urlpatterns = [
     path('index/', IndexTemplateView.as_view(), name='index'),
     path('nosotros/', NosotrosListView.as_view(), name='nosotros'),
     path('servicios/list/', ServiciosListView.as_view(), name='servicios-list'),
+    path('servicios/detalle-servicio/<uuid:id>/', ServiciosDetailView.as_view(), name='detail-service'),
     path('cursos/list/', CursoListView.as_view(), name='curso-list'),
     path('cursos/detalle-curso/<uuid:id>/', CursoDetailView.as_view(), name='detail-curso'),
     path('inscripciones/registro/', InscripcionesCreateView.as_view(), name='inscripciones-cursos'),

@@ -110,7 +110,6 @@ class UserDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteVi
     success_url = reverse_lazy('user_list')
     permission_required = 'delete_user'
     url_redirect = success_url
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)

@@ -2,6 +2,9 @@ from django.db import models
 import uuid
 from django.conf import settings
 from datetime import datetime
+from django.core.validators import FileExtensionValidator
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 # Create your models here.
 # class Nosotros(models.Model):
@@ -114,11 +117,24 @@ class Servicios(models.Model):
                 }
         return item
     
+# class Imagen(models.Model):
+#     imagen = models.ImageField(upload_to='system/images/general/')
+#     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+#     object_id = models.PositiveIntegerField()
+#     content_object = GenericForeignKey('content_type', 'object_id')
+
+#     def __str__(self):
+#         return self.imagen.name
+#     def get_image(self):
+#         if self.imagen:
+#             return '{}{}'.format(settings.MEDIA_URL, self.imagen)
+#         return '{}{}'.format(settings.STATIC_URL, 'img/empty.png')
+    
 class Proyectos(models.Model):
     id = models.UUIDField(primary_key=True, default = uuid.uuid4, unique=True, editable=False)
     nombre_proyecto = models.CharField(max_length=100, unique=True, verbose_name="Titulo")
-    descripcion_corta = models.TextField(verbose_name="Descripción Corta", max_length=240)
-    descripcion_detallada = models.TextField(verbose_name="Descripción Detallada")
+    descripcion_corta = models.TextField(verbose_name="Descripción Corta", max_length=240, blank=True, null=True)
+    descripcion_detallada = models.TextField(verbose_name="Descripción Detallada", blank=True, null=True)
     fecha_de_proyecto = models.DateField(default=datetime.now, verbose_name="Fecha del Proyecto")
     cliente = models.CharField(max_length=100, unique=True, verbose_name="Nombre del Cliente")
     imagen = models.ImageField(upload_to='system/images/proyectos/', verbose_name="Imagen")
@@ -193,7 +209,7 @@ class Cursos(models.Model):
     duracion = models.TextField(verbose_name="Duración", null=True, blank=True)
     costo = models.DecimalField(max_digits=12, decimal_places=2, verbose_name="Costo")
     capacitador_id = models.ForeignKey(Capacitador, on_delete=models.CASCADE, verbose_name="Capacitador")
-    temario = models.FileField(upload_to='system/documentos/temarios/', null=True, blank=True, verbose_name="Temario")
+    temario = models.FileField(upload_to='system/documentos/temarios/', null=True, blank=True, verbose_name="Temario",validators=[FileExtensionValidator(allowed_extensions=['pdf', 'docx'])])
     imagen = models.ImageField(upload_to='system/images/cursos/', verbose_name="Imagen")
     estado = models.BooleanField(default=True, verbose_name="Estado")
     created_at = models.DateTimeField(auto_now_add = True)
@@ -209,6 +225,7 @@ class Cursos(models.Model):
         if self.temario:
             return '{}{}'.format(settings.MEDIA_URL, self.temario)
         return '{}{}'.format(settings.STATIC_URL, 'img/icon_doc_failed.png')
+    
 
 class Inscripciones(models.Model):
     GRADO = [

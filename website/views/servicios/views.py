@@ -1,13 +1,8 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView,DetailView
+from django.views.generic import ListView, DetailView
 from system.models import *
 from django.urls import reverse_lazy
-from django.http import JsonResponse
-from django.core.paginator import Paginator
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
 
 class ServiciosListView(ListView):
     model = Servicios
@@ -27,8 +22,29 @@ class ServiciosListView(ListView):
         return queryset
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #context['services'] = Servicios.objects.all()
+        #context['services'] = Servicios.objects.filter(estado=True)
         context['tservices'] = TipoServicio.objects.all()
         context['active_filter'] = self.request.GET.get('categories', 'all')
+        context['comp'] = Compania.objects.first()
+        return context
+    
+class ServiciosDetailView(DetailView):
+    model = Servicios
+    template_name = 'servicios/service-details.html'
+    context_object_name = 'service'
+    slug_field = 'id'
+
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        # Obtiene el ID del curso desde los parámetros de la URL
+        servicio_id = self.kwargs.get('id')
+        # Recupera el objeto Cursos o devuelve un 404 si no se encuentra
+        return get_object_or_404(Servicios, id=servicio_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['services'] = Servicios.objects.all()
         context['comp'] = Compania.objects.first()
         return context

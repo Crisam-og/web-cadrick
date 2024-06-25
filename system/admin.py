@@ -9,3 +9,4 @@ admin.site.register(Clientes)
 #admin.site.register(Contacto)
 admin.site.register(Compania) # Register
 admin.site.register(Inscripciones) # Register
+# admin.site.register(Imagen)

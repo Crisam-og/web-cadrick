@@ -9,7 +9,7 @@
     
     <div class="swiper mySwiper swiper-proyectos">
       <div class="swiper-wrapper">
-        {% for p in proyec  %}
+        {% for p in proyec %}
         <div class="swiper-slide">
           <div class="proyectosBox">
               <img src="{{ p.get_image }}" class="proyec">
@@ -17,8 +17,9 @@
                   <h3>{{ p.nombre_proyecto }}</h3> 
                   <p style="font-family:Arial;">{{ p.descripcion_corta }}</p>
               </div>
+               {% comment %} 
               <hr>
-               <a href="#"><span>Mas Información</span></a>
+              <a href="#"><span>Mas Información</span></a> {% endcomment %}
           </div>
         </div>
         {% endfor %}

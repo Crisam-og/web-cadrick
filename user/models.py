@@ -6,6 +6,7 @@ from crum import get_current_request
 # Create your models here.
 class User(AbstractUser):
     image = models.ImageField(upload_to='system/images/users/', null=True, blank=True, verbose_name='Imagen')
+    failed_login_attempts = models.IntegerField(default=0)
     def get_image(self):
         if self.image:
             return '{}{}'.format(settings.MEDIA_URL, self.image)
