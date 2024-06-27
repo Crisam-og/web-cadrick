@@ -41,8 +41,11 @@ class GaleriaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Creat
             action = request.POST['action']
             if action == 'add':
                 form = self.get_form()
-                if form.is_valid():
-                    form.save()
+                mltpe_image = ImagenGaleriaForm(request.POST, request.FILES)
+                if form.is_valid() and mltpe_image.is_valid():
+                    galeria_instance = form.save()
+                    for imagen in request.FILES.getlist('imagen'):
+                        ImagenGaleria.objects.create(galeria=galeria_instance, imagen=imagen)
                 else:
                     data['error'] = form.errors
             else:
@@ -57,44 +60,53 @@ class GaleriaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Creat
         context['title'] = 'Edición de Textos y Imagenes'
         context['entity'] = 'Galeria'
         context ['icon'] = 'fas fa-plus'
+        context['mimage'] = ImagenGaleriaForm()
         context['list_url'] = reverse_lazy('galeria_update')
         context['action'] = 'add'
         return context
     
-class GaleriaUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
+class GaleriaUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMixin, UpdateView):
     model = Galeria
-    form_class = GaleriaForm 
+    form_class = GaleriaForm
     template_name = 'publicidad/create.html'
     success_url = reverse_lazy('publicidad_list')
     permission_required = 'change_publicidad'
     url_redirect = success_url
+
     def dispatch(self, request, *args, **kwargs):
-        # Verifica si hay alguna instancia de Compania
         if not Galeria.objects.exists():
             return redirect('galeria_create')
         return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
         try:
-            # Obtener la única instancia de Compania
             return Galeria.objects.get()
         except Galeria.MultipleObjectsReturned:
-            # Si hay múltiples, obtener la primera y eliminar las demás
             galerias = Galeria.objects.all()
             instance = galerias.first()
-            # Eliminar las demás instancias
             galerias.exclude(pk=instance.pk).delete()
             return instance
-    
+
     def post(self, request, *args, **kwargs):
         data = {}
         try:
             action = request.POST.get('action', '')
             if action == 'edit':
                 instance = self.get_object()
-                form = self.get_form_class()(request.POST, instance=instance)
-                if form.is_valid():
-                    form.save()
+                form = self.get_form_class()(request.POST, request.FILES, instance=instance)
+                mltpe_image = ImagenGaleriaForm(request.POST, request.FILES)
+                if form.is_valid() and mltpe_image.is_valid():
+                    galeria_instance = form.save()
+
+                    # Handle deletion of existing images
+                    for image in ImagenGaleria.objects.filter(galeria=galeria_instance):
+                        if request.POST.get(f'delete_image_{image.id}'):
+                            image.delete()
+
+                    # Handle uploading new images
+                    for imagen in request.FILES.getlist('imagen'):
+                        ImagenGaleria.objects.create(galeria=galeria_instance, imagen=imagen)
+
                     data['success'] = True
                 else:
                     data['error'] = form.errors
@@ -103,38 +115,32 @@ class GaleriaUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Updat
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Edición de Textos y Imagenes'
         context['entity'] = 'Galeria'
-        context ['icon'] = 'fas fa-pencil-alt'
+        context['icon'] = 'fas fa-pencil-alt'
         context['list_url'] = reverse_lazy('galeria_update')
+        context['mimage'] = ImagenGaleriaForm()
+        galeria = self.get_object()
+        context['existing_images'] = galeria.imagenes.all()
         context['action'] = 'edit'
-
         return context
     
-# class GaleriaDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView):
-#     model = Galeria
-#     template_name = 'publicidad/delete.html'
-#     success_url = reverse_lazy('publicidad_list')
-#     permission_required = 'delete_publicidad'
-#     url_redirect = success_url
-#     def dispatch(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         return super().dispatch(request, *args, **kwargs)
+class ImageGaleriaDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMixin, DeleteView):
+    model = ImagenGaleria
+    
+    def delete(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+            self.object.delete()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
 
-#     def post(self, request, *args, **kwargs):
-#         data = {}
-#         try:
-#             self.object.delete()
-#         except Exception as e:
-#             data['error'] = str(e)
-#         return JsonResponse(data)
+    def post(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['title'] = 'Eliminación de Imagenes'
-#         context['entity'] = 'Publicidad'
-#         context['list_url'] = reverse_lazy('publicidad_list')
-#         return context
+    def get(self, request, *args, **kwargs):
+        return JsonResponse({'success': False, 'error': 'GET method not allowed'})

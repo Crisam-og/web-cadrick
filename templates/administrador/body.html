@@ -38,6 +38,20 @@
             icon: 'error',
           });
         {% endif %}
+
+        {% if messages %}
+            {% for m in messages %}
+
+            Swal.fire({
+              title: '¡Éxito!',
+              text: '{{ m }}',
+              icon: 'success',
+              
+
+            })
+          
+            {% endfor %}
+        {% endif %}
         </script>
     {% endblock %}
     <!-- ./wrapper -->

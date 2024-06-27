@@ -42,6 +42,7 @@ function submit_with_ajax(url, title, content, parameters, callback) {
             
                     }).done(function (data) {
                         console.log(data);
+                        
                         if (!data.hasOwnProperty('error')) {
                             callback(data);
                             return false;

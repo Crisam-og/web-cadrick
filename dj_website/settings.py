@@ -30,6 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 
 # Application definition
@@ -90,7 +91,7 @@ WSGI_APPLICATION = 'dj_website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_cadrick',
+        'NAME': 'db_cadricking',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
@@ -162,5 +163,6 @@ LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_URL = '/login/'
 AUTH_USER_MODEL = 'user.User'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+
 # SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True

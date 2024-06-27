@@ -24,26 +24,17 @@
 
         <div class="position-relative h-100">
           <div class="slides-1 portfolio-details-slider swiper">
+
             <div class="swiper-wrapper align-items-center">
-
+              {% for s in existing_images %}
               <div class="swiper-slide">
-                <img src="{% static "lib/website-v1/assets/img/projects/remodeling-1.jpg" %}" alt="">
+                <img src="{{ s.get_image }}" alt="">
               </div>
-
-              <div class="swiper-slide">
-                <img src="{% static "lib/website-v1/assets/img/projects/construction-1.jpg" %}" alt="">
-              </div>
-
-              <div class="swiper-slide">
-                <img src="{% static "lib/website-v1/assets/img/projects/design-1.jpg" %}"alt="">
-              </div>
-
-              <div class="swiper-slide">
-                <img src="{% static "lib/website-v1/assets/img/projects/repairs-1.jpg" %}" alt="">
-              </div>
-
+              {% endfor %}
             </div>
+
             <div class="swiper-pagination"></div>
+            
           </div>
           <div class="swiper-button-prev"></div>
           <div class="swiper-button-next"></div>

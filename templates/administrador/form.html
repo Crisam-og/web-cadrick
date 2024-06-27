@@ -63,8 +63,20 @@
             
             submit_with_ajax(window.location.pathname, 'Notificación',
             '¿Estas seguro de realizar la siguiente acción?', parameters, function (){
-                location.href = '{{ list_url }}';
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'La operación se completó correctamente.',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#3085d6',
+                    preConfirm: ()=>{
+                        location.href = '{{ list_url }}';
+                    },
+                  
+                  allowOutsideClick: () => false,
+                  allowEscapeKey: () => false,
                 });
+            });
          });
 
     

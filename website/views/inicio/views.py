@@ -26,6 +26,9 @@ class IndexTemplateView(TemplateView):
         context['courses'] = Cursos.objects.filter(estado=True).order_by('fecha_de_inicio')[:3] 
         context['service'] = Servicios.objects.filter(estado=True)[:6] 
         context['publicidad'] = Galeria.objects.first()
+        context['pi'] = ImagenGaleria.objects.all()
+        # galeria = self.get_object()
+        # context['existing_images'] = galeria.imagenes.all()
         context['client'] = Clientes.objects.all()
         context['comp'] = Compania.objects.first()
         return context

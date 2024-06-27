@@ -155,4 +155,6 @@ class CursoDetailView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DetailV
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context ['title'] = 'Detalle del curso'
+        curso = self.get_object()
+        context['document_name'] = os.path.basename(curso.temario.name)
         return context

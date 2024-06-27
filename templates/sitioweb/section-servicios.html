@@ -14,10 +14,10 @@
             {% for s in service %}
           <div class="col-lg-4 col-md-6 portfolio-item filter-remodeling">
             <div class="portfolio-content h-100">
-              <img src="{{ s.get_image }}" class="img-fluid" alt="">
+              <img src="{{ s.get_first_image }}" class="img-fluid" alt="">
               <div class="portfolio-info">
                 <h4>{{ s.servicio_id }} </h4>
-                <p>{{ s.descripcion_servicio }}</p>
+                <p>{{ s.nombre_servicio }}</p>
                 <a href="{{ s.get_image }}" title="{{ s.title }}" data-gallery="portfolio-gallery-remodeling" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                 <a href="{% url "detail-service" s.id %}" title="Más información" class="details-link"><i class="bi bi-hand-index-thumb"></i></a>
               </div>

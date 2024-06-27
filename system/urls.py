@@ -67,6 +67,7 @@ urlpatterns = [
     
     path('image-and-text/add/', GaleriaCreateView.as_view(), name='galeria_create'), 
     path('image-and-text/edit/',  GaleriaUpdateView.as_view(), name='galeria_update'),  
+    path('delete-image/<uuid:pk>/', ImageGaleriaDeleteView.as_view(), name='delete_image'),
     
      
 

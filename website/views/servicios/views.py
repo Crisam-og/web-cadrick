@@ -47,4 +47,6 @@ class ServiciosDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['services'] = Servicios.objects.all()
         context['comp'] = Compania.objects.first()
+        galeria = self.get_object()
+        context['existing_images'] = galeria.imagenes.all()
         return context

@@ -20,7 +20,10 @@
         
         <td> {{ p.nombre_boton }} </td>
         <td> {{ p.url_boton }} </td>
-        <td class="text-center"> <img src="{{ p.get_image }}" alt="Imagen del servicio" height="100"> </td>  
+        {% for image in existing_images %}
+
+        <td class="text-center"> <img src="{{ image.get_image }}" class="img-thumbnail" alt="Imagen del servicio" height="100" width="100"> </td>  
+        {% endfor %}
         <td>
             {% if p.estado == True %}
                 <span class="badge badge-success">Activo</span>

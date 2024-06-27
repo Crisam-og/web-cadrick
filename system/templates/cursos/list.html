@@ -2,15 +2,15 @@
 
 {% block columns %}
     <tr>
-        <th scope="col" style="width: 20%;">Nombre</th>
+        <th scope="col" style="width: 15%;">Nombre</th>
        <!-- <th scope="col" style="width: 15%;">Descipción</th> -->
        <!--<th scope="col" style="width: 10%;">Inicio</th>-->
        <!-- <th scope="col" style="width: 10%;">Horario</th>-->
         <!--<th scope="col" style="width: 10%;">Duración</th>-->
         <th scope="col" style="width: 10%;">Costo</th>
-        <th scope="col" style="width: 25%;">Capacitador</th>
-        <th scope="col" style="width: 10%;" class="text-center">Temario</th>
-        <th scope="col" style="width: 15%;" class="text-center">Imagen</th>
+        <th scope="col" style="width: 15%;">Capacitador</th>
+        {% comment %} <th scope="col" style="width: 10%;" class="text-center">Temario</th> {% endcomment %}
+        <th scope="col" style="width: 10%;">Imagen</th>
         <th scope="col" style="width: 10%;">Estado</th>
         <th scope="col" style="width: 10%;">Opciones</th>
 
@@ -30,16 +30,16 @@
         <td> {{ a.capacitador_id }} </td>
         <!-- <td> {{ a.temario }} </td> -->
         <!-- <td> {{ a.descripcion | safe }} </td> -->
-        <td class="text-center">
+        {% comment %} <td class="text-center">
             {% if a.temario %}
                 <a href="{{ a.get_document }}" target="_blank"><i class="fas fa-file-alt fa-2x"></i></a>
             {% else %}
             <i class="fas fa-eye-slash fa-2x"></i>
                 
             {% endif %}
-        </td>
+        </td> {% endcomment %}
 
-        <td class="text-center"> <img src="{{ a.get_image }}" alt="Imagen del servicio" height="100"> </td>  
+        <td class="text-center"> <img src="{{ a.get_image }}" class="img-thumbnail" alt="Imagen del servicio" height="100" width="150"> </td>  
         <td>
             {% if a.estado == True %}
                 <span class="badge badge-success">Activo</span>

@@ -2,18 +2,27 @@ from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from system.models import *
 from system.forms.servicios.forms import *
 from django.urls import reverse_lazy
-from django.http import JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from system.mixin import *
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 class ServicioListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
     model = Servicios
     template_name = 'servicios/list.html'
     permission_required = 'view_servicios'
     #create_url = 'servicios/create.html'
-    
+    context_object_name = 'servicios'
+        
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    
+    # def get(self, request, *args, **kwargs):
+    #     services = Servicios(request.GET.get('id'))
+    #     serviceimg = ImagenServicios(request.GET('servicios'))
+    #     if 
+        return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Listado de servicios'
@@ -36,10 +45,18 @@ class ServicioCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Crea
             action = request.POST['action']
             if action == 'add':
                 form = self.get_form()
-                if form.is_valid():
-                    form.save()
+                mltpe_image = ImagenServiciosForm(request.POST, request.FILES)
+                if form.is_valid() and mltpe_image.is_valid():
+                    servicio_instance = form.save()
+                    for imagen in request.FILES.getlist('imagen'):
+                        ImagenServicios.objects.create(servicios=servicio_instance, imagen=imagen)
                 else:
-                    data['error'] = form.errors
+                    errors = []
+                    for error in form.errors.values():
+                        errors.extend(error)
+                    for error in mltpe_image.errors.values():
+                        errors.extend(error)
+                    data['error'] = errors
             else:
                 data['error'] = 'No hay registros'
             
@@ -52,9 +69,9 @@ class ServicioCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Crea
         context['title'] = 'Registrar nuevo servicio'
         context['entity'] = 'Servicios'
         context ['icon'] = 'fas fa-plus'
+        context['mimage'] = ImagenServiciosForm()
         context['list_url'] = reverse_lazy('servicios_list')
         context['action'] = 'add'
-
         return context
     
 class ServicioUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
@@ -75,11 +92,28 @@ class ServicioUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Upda
         try:
             action = request.POST['action']
             if action == 'edit':
-                form = self.get_form()
-                if form.is_valid():
-                    form.save() 
+                instance = self.get_object()
+                form = self.get_form_class()(request.POST, request.FILES, instance=instance)
+                mltpe_image = ImagenServiciosForm(request.POST, request.FILES)
+                if form.is_valid() and mltpe_image.is_valid():       
+                   servicio_instance = form.save() 
+                   # Handle deletion of existing images
+                #    messages.success(request,"Actualizado Correctamente")
+                   
+                   for image in ImagenServicios.objects.filter(servicios=servicio_instance):
+                        if request.POST.get(f'delete_image_{image.id}'):
+                            image.delete()
+
+                    # Handle uploading new images
+                   for imagen in request.FILES.getlist('imagen'):
+                        ImagenServicios.objects.create(servicios=servicio_instance, imagen=imagen)
                 else:
-                    data['error'] = form.errors
+                    errors = []
+                    for error in form.errors.values():
+                        errors.extend(error)
+                    for error in mltpe_image.errors.values():
+                        errors.extend(error)
+                    data['error'] = errors
             else:
                 data['error'] = 'No hay registros'
             
@@ -94,8 +128,12 @@ class ServicioUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Upda
         context['entity'] = 'Servicios'
         context ['icon'] = 'fas fa-pencil-alt'
         context['list_url'] = reverse_lazy('servicios_list')
+        context['mimage'] = ImagenServiciosForm()
+        galeria = self.get_object()
+        context['existing_images'] = galeria.imagenes.all()
+        context['mivi_images'] = Galeria.objects.all()
         context['action'] = 'edit'
-        context['image_url'] = self.object.imagen.url if self.object.imagen else None
+        
 
         return context
 

@@ -5,7 +5,7 @@ from datetime import datetime
 from django.core.validators import FileExtensionValidator
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-
+import os
 # Create your models here.
 # class Nosotros(models.Model):
 #     id = models.UUIDField(primary_key=True, default = uuid.uuid4, unique=True, editable=False)
@@ -41,17 +41,33 @@ class Galeria(models.Model):
     sub_section_servicios = models.TextField(verbose_name="Subtitulo Seccion Servicios", blank=True)
     sub_section_clientes = models.TextField(verbose_name="Subtitulo Seccion Clientes", blank=True)
     sub_section_cursos = models.TextField(verbose_name="Subtitulo Seccion Cursos", blank=True)
-    imagen_principal_1 = models.ImageField(upload_to='system/images/galeria/', verbose_name="Imagen Portada Principal 1")
-    imagen_principal_2 = models.ImageField(upload_to='system/images/galeria/', verbose_name="Imagen Portada Principal 2")
-    imagen_principal_3 = models.ImageField(upload_to='system/images/galeria/', verbose_name="Imagen Portada Principal 3")
     imagen_mision = models.ImageField(upload_to='system/images/galeria/', verbose_name="Imagen Misión")
     imagen_vision = models.ImageField(upload_to='system/images/galeria/', verbose_name="Imagen Visión")
+    
+    def get_image_mision(self):
+        if self.imagen_mision:
+            return '{}{}'.format(settings.MEDIA_URL, self.imagen_mision)
+        return '{}{}'.format(settings.STATIC_URL, 'img/empty.png')
+    def get_image_vision(self):
+        if self.imagen_vision:
+            return '{}{}'.format(settings.MEDIA_URL, self.imagen_vision)
+        return '{}{}'.format(settings.STATIC_URL, 'img/empty.png')
 
-    def get_image(self, image_field='imagen'):
-        image = getattr(self, image_field)
-        if image:
-            return '{}{}'.format(settings.MEDIA_URL, image)
-        return '{}{}'.format(settings.STATIC_URL, 'img/image_not_found.png')
+    # def get_image(self, image_field='imagen'):
+    #     image = getattr(self, image_field)
+    #     if image:
+    #         return '{}{}'.format(settings.MEDIA_URL, image)
+    #     return '{}{}'.format(settings.STATIC_URL, 'img/image_not_found.png')
+
+class ImagenGaleria(models.Model):
+    id = models.UUIDField(primary_key=True, default = uuid.uuid4, unique=True, editable=False) 
+    galeria = models.ForeignKey(Galeria, related_name='imagenes', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='system/images/galeria/')
+    
+    def get_image(self):
+        if self.imagen:
+            return '{}{}'.format(settings.MEDIA_URL, self.imagen)
+        return '{}{}'.format(settings.STATIC_URL, 'img/empty.png')
     
 class Compania(models.Model):
     id = models.UUIDField(primary_key=True, default = uuid.uuid4, unique=True, editable=False)
@@ -96,7 +112,6 @@ class Servicios(models.Model):
     nombre_servicio = models.CharField(max_length=100, unique=True, verbose_name="Nombre del servicio")
     descripcion_servicio = models.TextField(verbose_name="Descripción")
     servicio_id = models.ForeignKey(TipoServicio, on_delete=models.CASCADE, verbose_name="Seleciones un tipo de servicio")
-    imagen = models.ImageField(upload_to='system/images/servicios/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add = True)
     estado = models.BooleanField(default=True, verbose_name="Estado")
     updated = models.DateTimeField(auto_now = True)
@@ -104,10 +119,21 @@ class Servicios(models.Model):
     def __str__(self):
         return self.nombre_servicio
     
-    def get_image(self):
-        if self.imagen:
-            return '{}{}'.format(settings.MEDIA_URL, self.imagen)
-        return '{}{}'.format(settings.STATIC_URL, 'img/empty.png')
+    def get_first_image(self):
+        first_image = self.imagenes.first()
+        if first_image:
+            return first_image.get_image()
+        return '{}{}'.format(settings.STATIC_URL, 'img/image_not_found.png')
+    def get_all_image(self):
+        all_image = self.imagenes.all()
+        if all_image:
+            return all_image.get_image()
+        return '{}{}'.format(settings.STATIC_URL, 'img/image_not_found.png')
+    
+    # def get_image(self):
+    #     if self.imagen:
+    #         return '{}{}'.format(settings.MEDIA_URL, self.imagen)
+    #     return '{}{}'.format(settings.STATIC_URL, 'img/empty.png')
             
     def toJSON(self):
         item = {'id': self.id, 
@@ -116,6 +142,16 @@ class Servicios(models.Model):
                 'imagen': self.imagen.url
                 }
         return item
+
+class ImagenServicios(models.Model):
+    id = models.UUIDField(primary_key=True, default = uuid.uuid4, unique=True, editable=False) 
+    servicios = models.ForeignKey(Servicios, related_name='imagenes', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='system/images/servicios/', blank=True, null=True,)
+    
+    def get_image(self):
+        if self.imagen:
+            return '{}{}'.format(settings.MEDIA_URL, self.imagen)
+        return '{}{}'.format(settings.STATIC_URL, 'img/empty.png')
     
 # class Imagen(models.Model):
 #     imagen = models.ImageField(upload_to='system/images/general/')
@@ -225,6 +261,8 @@ class Cursos(models.Model):
         if self.temario:
             return '{}{}'.format(settings.MEDIA_URL, self.temario)
         return '{}{}'.format(settings.STATIC_URL, 'img/icon_doc_failed.png')
+    def get_document_name(self):
+        return os.path.basename(self.temario.name)
     
 
 class Inscripciones(models.Model):
