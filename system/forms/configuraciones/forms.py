@@ -1,5 +1,6 @@
 from django.forms import *
 from system.models import *
+from django_summernote.widgets import SummernoteWidget
 
 class CompaniaForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -46,12 +47,10 @@ class CompaniaForm(ModelForm):
                     
                     }
                 ),
-            'historia': Textarea(
+            'historia': SummernoteWidget(
                 attrs={
                     'class': 'form-control',
                     'placeholder': 'Ingrese una historia', 
-                    'rows': 12,
-                    'cols': 12 
                     }
                 ),
             'mision': Textarea(

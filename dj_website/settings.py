@@ -50,6 +50,21 @@ INSTALLED_APPS = [
     'user'
     
 ]
+SUMMERNOTE_CONFIG = {
+    'summernote': {
+        'toolbar': [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['fontname', ['fontname']],
+            ['fontsize', ['fontsize']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            # Elimina o añade otras opciones según sea necesario
+        ],
+        'height': 300,
+        'width': '100%',
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

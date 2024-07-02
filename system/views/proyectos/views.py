@@ -35,10 +35,18 @@ class ProyectoCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Crea
             action = request.POST['action']
             if action == 'add':
                 form = self.get_form()
-                if form.is_valid():
-                    form.save()
+                mltpe_image = ImagenProyectoForm(request.POST, request.FILES)
+                if form.is_valid() and mltpe_image.is_valid():
+                    proyecto_instance = form.save()
+                    for imagen in request.FILES.getlist('imagen'):
+                        ImagenProyectos.objects.create(proyecto=proyecto_instance, imagen=imagen)
                 else:
-                    data['error'] = form.errors
+                    errors = []
+                    for error in form.errors.values():
+                        errors.extend(error)
+                    for error in mltpe_image.errors.values():
+                        errors.extend(error)
+                    data['error'] = errors
             else:
                 data['error'] = 'No hay registros'
             
@@ -51,6 +59,7 @@ class ProyectoCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Crea
         context['title'] = 'Registrar nuevo proyecto'
         context['entity'] = 'Proyectos'
         context ['icon'] = 'fas fa-plus'
+        context['mimage'] = ImagenProyectoForm()
         context['list_url'] = reverse_lazy('proyecto_list')
         context['action'] = 'add'
 
@@ -79,18 +88,35 @@ class ProyectoUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Upda
         try:
             action = request.POST['action']
             if action == 'edit':
-                form = self.get_form()
-                if form.is_valid():
-                    form.save() 
+                instance = self.get_object()
+                form = self.get_form_class()(request.POST, request.FILES, instance=instance)
+                mltpe_image = ImagenProyectoForm(request.POST, request.FILES)
+                if form.is_valid() and mltpe_image.is_valid():       
+                   proyecto_instance = form.save() 
+                   # Handle deletion of existing images
+                #    messages.success(request,"Actualizado Correctamente")
+                   
+                   for image in ImagenProyectos.objects.filter(proyecto=proyecto_instance):
+                        if request.POST.get(f'delete_image_{image.id}'):
+                            image.delete()
+
+                    # Handle uploading new images
+                   for imagen in request.FILES.getlist('imagen'):
+                        ImagenProyectos.objects.create(proyecto=proyecto_instance, imagen=imagen)
                 else:
-                    data['error'] = form.errors
+                    errors = []
+                    for error in form.errors.values():
+                        errors.extend(error)
+                    for error in mltpe_image.errors.values():
+                        errors.extend(error)
+                    data['error'] = errors
             else:
                 data['error'] = 'No hay registros'
             
         except Exception as e:
             data['error'] = str(e)
             
-        return JsonResponse(data) 
+        return JsonResponse(data)  
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -99,8 +125,10 @@ class ProyectoUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Upda
         context ['icon'] = 'fas fa-pencil-alt'
         context['list_url'] = reverse_lazy('proyecto_list')
         context['action'] = 'edit'
-        context['image_url'] = self.object.imagen.url if self.object.imagen else None
-
+        context['mimage'] = ImagenProyectoForm()
+        galeria = self.get_object()
+        context['existing_images'] = galeria.imagenes.all()
+        # context['image_url'] = self.object.imagen.url if self.object.imagen else None
         return context
 
 class ProyectoDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView):

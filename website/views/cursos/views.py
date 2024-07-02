@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 
 class CursoListView(ListView):
     model = Cursos
-    template_name = 'cursos/blog.html'
+    template_name = 'cursos/cursos.html'
     context_object_name = 'courses'
     paginate_by = 3
     
@@ -29,7 +29,7 @@ class CursoListView(ListView):
     
 class CursoDetailView(DetailView):
     model = Cursos
-    template_name = 'cursos/cursos-details.html'
+    template_name = 'cursos/curso-details.html'
     context_object_name = 'curso'
     slug_field = 'id'
 

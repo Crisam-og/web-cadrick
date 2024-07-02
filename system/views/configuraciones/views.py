@@ -7,86 +7,6 @@ from system.mixin import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
-# class CompaniaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
-#     model = Compania
-#     template_name = 'compania/list.html'
-#     permission_required = 'view_compania'
-   
-#     def dispatch(self, request, *args, **kwargs):
-#         return super().dispatch(request, *args, **kwargs)
-    
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context ['title'] = 'Listado de Configuraciones del Sitio Web'
-#         #context['create_url'] = reverse_lazy('config_create')
-#         return context
-    
-# class ConfigCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
-#     model = Cursos
-#     form_class = CursosForm
-#     template_name = 'cursos/create.html'
-#     success_url = reverse_lazy('cursos_list')
-#     permission_required = 'system.add_configuraciones'
-
-#     url_redirect = success_url
-#     @method_decorator(login_required)
-#     def dispatch(self, request, *args, **kwargs):
-#         return super().dispatch(request, *args, **kwargs)
-        
-#     def post(self, request, *args, **kwargs):
-#         data = {}
-        
-#         try:
-#             action = request.POST['action']
-#             if action == 'add':
-#                 form = self.get_form()
-                
-#                 if form.is_valid():
-#                     form.save()
-                    
-#                 else:
-#                     data['error'] = form.errors
-#             else: 
-#                 data['error'] = 'Ha ocurrido un error'
-#         except Exception as e:
-#             data['error'] = str(e)
-            
-#         return JsonResponse(data)
-    
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context ['title'] = 'Registrar nuevo Curso'
-#         context ['entity'] = 'Cursos'
-#         context ['icon'] = 'fas fa-plus'
-#         context ['list_url'] = reverse_lazy('cursos_list')
-#         context['action'] = 'add'
-#         return context
-# class CompaniaCreateView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
-#     model = Compania
-#     form_class = CompaniaForm
-#     template_name = 'compania/create.html'
-#     success_url = reverse_lazy('compania_update')
-#     permission_required = 'add_compania'
-#     url_redirect = success_url
-    
-#     def get_object(self, queryset=None):
-#         try:
-#             return Compania.objects.get()
-#         except Compania.DoesNotExist:
-#             return Compania()
-
-#     def form_valid(self, form):
-#         form.save()
-#         return super().form_valid(form) 
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['title'] = 'Crear Compañía'
-#         context['entity'] = 'Compania'
-#         context['icon'] = 'fas fa-plus'
-#         context['list_url'] = reverse_lazy('compania_update')
-#         context['action'] = 'add'
-#         return context
 
 class CompaniaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
     model = Compania
@@ -121,6 +41,8 @@ class CompaniaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Crea
         context ['title'] = 'Configuración de Compañía'
         context ['entity'] = 'Compania'
         context ['icon'] = 'fas fa-plus'
+        context['notificaciones'] = Notificaciones.objects.all().count() 
+        context['notificaciones_filter'] = Notificaciones.objects.all()[:3] 
         context ['list_url'] = reverse_lazy('compania_update')
         context['action'] = 'add'
         return context 
@@ -175,32 +97,8 @@ class CompaniaUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Up
         context['title'] = 'Configuración de Compañía'
         context['entity'] = 'Compania'
         context['icon'] = 'fas fa-pencil-alt'
+        context['notificaciones'] = Notificaciones.objects.all().count() 
+        context['notificaciones_filter'] = Notificaciones.objects.all()[:3] 
         context['list_url'] = reverse_lazy('compania_update')
         context['action'] = 'edit'
         return context
-
-    
-# class ConfigDeleteView(DeleteView):
-#     model = Cursos
-#     template_name = 'cursos/delete.html'
-#     success_url = reverse_lazy('cursos_list')
-    
-#     @method_decorator(login_required)
-#     def dispatch(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         return super().dispatch(request, *args, **kwargs)
-#     def post(self, request, *args, **kwargs):
-#         data = {}
-        
-#         try:
-#             self.object.delete()
-#         except Exception as e:
-#             data['error'] = str(e)
-            
-#         return JsonResponse(data)
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context ['title'] = 'Eliminar curso'
-#         context ['entity'] = 'Cursos'
-#         context['list_url'] = reverse_lazy('cursos_list')
-#         return context

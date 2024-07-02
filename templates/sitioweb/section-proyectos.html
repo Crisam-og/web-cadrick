@@ -12,14 +12,15 @@
         {% for p in proyec %}
         <div class="swiper-slide">
           <div class="proyectosBox">
-              <img src="{{ p.get_image }}" class="proyec">
+              <img src="{{ p.get_first_image }}" class="proyec img-thumbnail">
               <div class="content">
                   <h3>{{ p.nombre_proyecto }}</h3> 
-                  <p style="font-family:Arial;">{{ p.descripcion_corta }}</p>
+                  <hr>
+                  <p style="font-family: new times roman;" class="text-center"><i class="bi bi-calendar-week" style="color:#fe3b00;"></i> {{ p.fecha_de_proyecto }}</p>
               </div>
-               {% comment %} 
+               
               <hr>
-              <a href="#"><span>Mas Información</span></a> {% endcomment %}
+              <a href="{% url "detail-proyecto" p.id %}"><span>Mas Información</span></a> 
           </div>
         </div>
         {% endfor %}

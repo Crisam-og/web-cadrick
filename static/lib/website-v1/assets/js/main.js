@@ -209,6 +209,35 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   });
 
+  new Swiper(".service-details-swiper", {
+    effect: "cube",
+    grabCursor: true,
+    centeredSlides: true,
+    speed: 600,
+    loop: true,
+    
+    cubeEffect: {
+      shadow: false,
+      slideShadows: true,
+      shadowOffset: 20,
+      shadowScale: 0.94,
+    },
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false
+    },
+    slidesPerView: "auto",
+    pagination: {
+      el: ".swiper-pagination",
+      type: 'bullets',
+      clickable: true
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  });
+
   new Swiper(".swiper-publicidad", {
     effect: "coverflow",
     grabCursor: true,

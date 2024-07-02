@@ -18,7 +18,7 @@
               <div class="portfolio-info">
                 <h4>{{ s.servicio_id }} </h4>
                 <p>{{ s.nombre_servicio }}</p>
-                <a href="{{ s.get_image }}" title="{{ s.title }}" data-gallery="portfolio-gallery-remodeling" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="{{ s.get_first_image }}" title="{{ s.title }}" data-gallery="portfolio-gallery-remodeling" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                 <a href="{% url "detail-service" s.id %}" title="Más información" class="details-link"><i class="bi bi-hand-index-thumb"></i></a>
               </div>
             </div>      

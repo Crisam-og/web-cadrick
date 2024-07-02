@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, View
 from system.models import *
 from system.forms.inscripciones.forms import *
 from django.urls import reverse_lazy
@@ -18,7 +18,14 @@ class InscripcionesListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,L
         context = super().get_context_data(**kwargs)
         context['title'] = 'Listado de Inscripciones'
         return context
-    
+    def get_queryset(self):
+        return Inscripciones.objects.all().order_by('-created_at')
+
+class InscripcionesCountView(View):
+    def get(self, request, *args, **kwargs):
+        count = Inscripciones.objects.count()
+        return JsonResponse({'count': count})
+        
 class InscripcionesUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
     model = Inscripciones
     form_class = IncripcionesForm

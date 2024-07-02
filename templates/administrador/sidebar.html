@@ -134,14 +134,18 @@
             </li> 
 
             <li class="nav-item">
-              <a href="{% url "inscripciones_list" %}" class="nav-link">
+              <a href="{% url "inscripciones_list" %}" class="nav-link" id="inscripciones-link">
                 <i class='nav-icon far fa-address-card'></i>
                 <span> 
                 </span>
-                <p>Inscripciones</p>
+                <p>Inscripciones
+                  {% comment %} <span id="inscripciones-badge" class="badge badge-danger right" style="display: none;">0</span> {% endcomment %}
+                </p>
+                
               </a>
             </li>
           </ul>
+          {% if perms.system.view_user %}
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user-cog"></i>
@@ -162,7 +166,45 @@
           </li>
         </ul>
           </li>
+          {% endif %}
         </nav>
     </div> 
     <!-- /.sidebar -->
   </aside>
+  {% block js %}
+  {% comment %} <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function updateInscripcionesCount() {
+        fetch("{% url 'inscripciones_count' %}")
+          .then(response => response.json())
+          .then(data => {
+            const currentCount = data.count;
+            const lastVisitedCount = localStorage.getItem('lastVisitedInscripcionesCount') || 0;
+    
+            if (currentCount > lastVisitedCount) {
+              document.getElementById('inscripciones-badge').textContent = currentCount - lastVisitedCount;
+              document.getElementById('inscripciones-badge').style.display = 'inline';
+            } else {
+              document.getElementById('inscripciones-badge').style.display = 'none';
+            }
+    
+            localStorage.setItem('currentInscripcionesCount', currentCount);
+          })
+          .catch(error => console.error('Error fetching inscripciones count:', error));
+      }
+    
+      // Update the count initially
+      updateInscripcionesCount();
+    
+      // Optionally, you can set an interval to periodically update the count
+      setInterval(updateInscripcionesCount, 15000); // Update every 60 seconds
+    
+      // Hide the badge and update the last visited count when clicking on Inscripciones link
+      document.getElementById('inscripciones-link').addEventListener('click', function() {
+        document.getElementById('inscripciones-badge').style.display = 'none';
+        const currentCount = localStorage.getItem('currentInscripcionesCount') || 0;
+        localStorage.setItem('lastVisitedInscripcionesCount', currentCount);
+      });
+    });
+    </script> {% endcomment %}
+    {% endblock %}

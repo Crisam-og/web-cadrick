@@ -3,7 +3,7 @@
 {% block columns %}
     <tr>
         <th scope="col" style="width: 20%;">Nombre</th>
-        <th scope="col" style="width: 20%;">Descripcion</th>
+        {% comment %} <th scope="col" style="width: 20%;">Descripcion</th> {% endcomment %}
         <th scope="col" style="width: 20%;">Categoria</th>
         <th scope="col" style="width: 20%;">Imagen</th>
         <th scope="col" style="width: 10%;">Estado</th>
@@ -15,7 +15,7 @@
 {% for a in object_list %}
     <tr>
         <td> {{ a.nombre_servicio }} </td>
-        <td> {{ a.descripcion_servicio }} </td>  
+        {% comment %} <td> {{ a.descripcion_servicio }} </td>   {% endcomment %}
         <td> {{ a.servicio_id }} </td>
         <td class="text-center">
         

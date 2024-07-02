@@ -93,16 +93,41 @@
 </form>
 
 <script>
-    {% if form.errors %}
-    // Manejo de errores
-    {% endif %}
+    {% if form.errors %} 
+         var errors = '';
+         {% for field in form %} 
+            {% for error in field.errors %}
+                errors += '{{ error }}\n';
+            {% endfor %}
+        {% endfor %}
+        Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: errors,
+          });
+          {% endif %}
+          
     $('form').on('submit', function(e){
         e.preventDefault();
         var parameters = new FormData(this);
-        submit_with_ajax(window.location.pathname, 'Notificación', '¿Estás seguro de realizar la siguiente acción?', parameters, function (){
-            location.href = '{{ list_url }}';
+        
+        submit_with_ajax(window.location.pathname, 'Notificación',
+        '¿Estas seguro de realizar la siguiente acción?', parameters, function (){
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'La operación se completó correctamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#3085d6',
+                preConfirm: ()=>{
+                    location.href = '{{ list_url }}';
+                },
+              
+              allowOutsideClick: () => false,
+              allowEscapeKey: () => false,
+            });
         });
-    });
+     });
 
     // Función para eliminar imágenes
     $('.delete-image').on('click', function(e) {

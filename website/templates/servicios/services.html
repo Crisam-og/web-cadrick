@@ -26,7 +26,7 @@
         <div class="portfolio-isotope" data-portfolio-filter="*" data-portfolio-layout="masonry" data-portfolio-sort="original-order">
 
           <ul class="portfolio-flters" data-aos="fade-up" data-aos-delay="100">
-            <li><a href="{% url "servicios-list" %}"> Todo </a></li>
+            <li><a href="{% url "servicios-list" %}" class="filter-active"> Todo </a></li>
             {% for ts in tservices %}
             <li><a href="?categories={{ ts.id }}" style="color: #000000;"> {{ ts.nombre_tipo_servicio }} </a> </li>
             {% endfor %}

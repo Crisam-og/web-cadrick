@@ -14,12 +14,11 @@ class CursosForm(ModelForm):
                     'placeholder': 'Ingrese el nombre del capacitador'
                 }
             ),
-            'descripcion': Textarea(
+            'descripcion': SummernoteWidget(
                 attrs = {
                     'class': 'form-control',
                     'placeholder': 'Ingrese la descripcion del curso',
-                    'rows': 3,
-                    'cols': 3 
+
                 }
             ),
             

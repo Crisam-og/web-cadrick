@@ -99,8 +99,10 @@ class TipoServicioUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,
         return context
 
 class TipoServicioDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView):
+    model = TipoServicio
+    template_name = 'tservicios/delete.html'
     success_url = reverse_lazy('tservicios_list')
-    permission_required = 'delete_servicios'
+    permission_required = 'delete_tiposervicio'
     url_redirect = success_url
     
     def dispatch(self, request, *args, **kwargs):

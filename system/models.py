@@ -6,32 +6,7 @@ from django.core.validators import FileExtensionValidator
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 import os
-# Create your models here.
-# class Nosotros(models.Model):
-#     id = models.UUIDField(primary_key=True, default = uuid.uuid4, unique=True, editable=False)
-#     historia = models.TextField()
-#     mision = models.TextField()
-#     vision = models.TextField()
-#     created_at = models.DateTimeField(auto_now_add = True)
-#     updated = models.DateTimeField(auto_now = True)
-    
-#     def __str__(self):
-#         return self.id
-#     def toJSON(self):
-#         item = {'id': self.id, 
-#                 'historia': self.historia, 
-#                 'mision': self.mision, 
-#                 'vision': self.vision
-#                 }
-#         return item
-# class Configuraciones(models.Model):
-#     id = models.UUIDField(primary_key=True, default = uuid.uuid4, unique=True, editable=False)
-#     nombre_config = models.CharField(max_length=100, verbose_name="Nombre de la Configuracion")
-#     valor = models.CharField(max_length=255, verbose_name="Valor de la Configuración")
-#     created_at = models.DateTimeField(auto_now_add = True)
-#     updated = models.DateTimeField(auto_now = True)
-#     def __str__(self):
-#         return self.nombre_config 
+ 
 class Galeria(models.Model):
     id = models.UUIDField(primary_key=True, default = uuid.uuid4, unique=True, editable=False) 
     titulo_principal = models.CharField(max_length=100, verbose_name="Titulo principal", blank=True)
@@ -52,12 +27,6 @@ class Galeria(models.Model):
         if self.imagen_vision:
             return '{}{}'.format(settings.MEDIA_URL, self.imagen_vision)
         return '{}{}'.format(settings.STATIC_URL, 'img/empty.png')
-
-    # def get_image(self, image_field='imagen'):
-    #     image = getattr(self, image_field)
-    #     if image:
-    #         return '{}{}'.format(settings.MEDIA_URL, image)
-    #     return '{}{}'.format(settings.STATIC_URL, 'img/image_not_found.png')
 
 class ImagenGaleria(models.Model):
     id = models.UUIDField(primary_key=True, default = uuid.uuid4, unique=True, editable=False) 
@@ -111,7 +80,7 @@ class Servicios(models.Model):
     id = models.UUIDField(primary_key=True, default = uuid.uuid4, unique=True, editable=False)
     nombre_servicio = models.CharField(max_length=100, unique=True, verbose_name="Nombre del servicio")
     descripcion_servicio = models.TextField(verbose_name="Descripción")
-    servicio_id = models.ForeignKey(TipoServicio, on_delete=models.CASCADE, verbose_name="Seleciones un tipo de servicio")
+    servicio_id = models.ForeignKey(TipoServicio, on_delete=models.CASCADE, verbose_name="Seleccione un tipo de servicio")
     created_at = models.DateTimeField(auto_now_add = True)
     estado = models.BooleanField(default=True, verbose_name="Estado")
     updated = models.DateTimeField(auto_now = True)
@@ -129,11 +98,6 @@ class Servicios(models.Model):
         if all_image:
             return all_image.get_image()
         return '{}{}'.format(settings.STATIC_URL, 'img/image_not_found.png')
-    
-    # def get_image(self):
-    #     if self.imagen:
-    #         return '{}{}'.format(settings.MEDIA_URL, self.imagen)
-    #     return '{}{}'.format(settings.STATIC_URL, 'img/empty.png')
             
     def toJSON(self):
         item = {'id': self.id, 
@@ -153,32 +117,32 @@ class ImagenServicios(models.Model):
             return '{}{}'.format(settings.MEDIA_URL, self.imagen)
         return '{}{}'.format(settings.STATIC_URL, 'img/empty.png')
     
-# class Imagen(models.Model):
-#     imagen = models.ImageField(upload_to='system/images/general/')
-#     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-#     object_id = models.PositiveIntegerField()
-#     content_object = GenericForeignKey('content_type', 'object_id')
-
-#     def __str__(self):
-#         return self.imagen.name
-#     def get_image(self):
-#         if self.imagen:
-#             return '{}{}'.format(settings.MEDIA_URL, self.imagen)
-#         return '{}{}'.format(settings.STATIC_URL, 'img/empty.png')
-    
 class Proyectos(models.Model):
     id = models.UUIDField(primary_key=True, default = uuid.uuid4, unique=True, editable=False)
     nombre_proyecto = models.CharField(max_length=100, unique=True, verbose_name="Titulo")
-    descripcion_corta = models.TextField(verbose_name="Descripción Corta", max_length=240, blank=True, null=True)
-    descripcion_detallada = models.TextField(verbose_name="Descripción Detallada", blank=True, null=True)
+    descripcion_proyecto = models.TextField(verbose_name="Descripción Detallada", blank=True, null=True)
     fecha_de_proyecto = models.DateField(default=datetime.now, verbose_name="Fecha del Proyecto")
     cliente = models.CharField(max_length=100, unique=True, verbose_name="Nombre del Cliente")
-    imagen = models.ImageField(upload_to='system/images/proyectos/', verbose_name="Imagen")
     created_at = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
     
     def __str__(self):
         return self.nombre_proyecto
+    def get_first_image(self):
+        first_image = self.imagenes.first()
+        if first_image:
+            return first_image.get_image()
+        return '{}{}'.format(settings.STATIC_URL, 'img/image_not_found.png')
+    def get_all_image(self):
+        all_image = self.imagenes.all()
+        if all_image:
+            return all_image.get_image()
+        return '{}{}'.format(settings.STATIC_URL, 'img/image_not_found.png')
+
+class ImagenProyectos(models.Model):
+    id = models.UUIDField(primary_key=True, default = uuid.uuid4, unique=True, editable=False) 
+    proyecto = models.ForeignKey(Proyectos, related_name='imagenes', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='system/images/proyectos/', blank=True, null=True,)
     def get_image(self):
         if self.imagen:
             return '{}{}'.format(settings.MEDIA_URL, self.imagen)
@@ -285,4 +249,13 @@ class Inscripciones(models.Model):
     
     def __str__(self):
         return self.nombre_ins
+
+class Notificaciones(models.Model):
+    id = models.UUIDField(primary_key=True, default = uuid.uuid4, unique=True, editable=False)
+    texto = models.CharField(max_length=255, verbose_name="Mensaje", blank=True)
+    curso = models.ForeignKey(Cursos, on_delete=models.CASCADE, verbose_name='Curso', null=True, blank=True)
+    leido = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add = True)
+    def __str__(self):
+        return self.texto
 

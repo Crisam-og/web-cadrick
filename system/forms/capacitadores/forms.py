@@ -23,7 +23,7 @@ class CapacitadorForm(ModelForm):
             
             'grado_academico': Select(
                 attrs = {
-                    'class': 'form-control',
+                    'class': 'form-control col-sm-2 control-label',
                     'placeholder': 'Ingrese el grado academico del capacitador'
                 }
             ),

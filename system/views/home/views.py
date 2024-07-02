@@ -16,9 +16,7 @@ from django.dispatch import receiver
 from user.models import User
 from django.contrib.auth.signals import user_logged_in
 from django.contrib.auth.mixins import LoginRequiredMixin
-# @receiver(user_logged_in)
-# def get_group_on_login(sender, user, request, **kwargs):
-#     user.get_group_session()
+from django.views.decorators.http import require_POST
 
 class HomeTemplateView(LoginRequiredMixin,TemplateView):
     template_name = 'home/index.html'
@@ -27,32 +25,12 @@ class HomeTemplateView(LoginRequiredMixin,TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     
-    # def get(self, request, *args, **kwargs):
-        
-    #     group = request.user.get_group_session()
-    #     print(group)
-    #     if group:
-    #         request.session['group_id'] = group.pk
-    #     else:
-    #         request.session['group_id'] = None  # Establecer None si no hay grupo
-    #     return super().get(request, *args, **kwargs)
-    
-    # def get(self, request, *args, **kwargs):
-    #     print(request.user.get_group_session())  
-    #     request.user.get_group_session()  
-    #     return super().get(request, *args, **kwargs)
     def get(self, request, *args, **kwargs):
-        # print(f"Resp: {request} ")
-        # print(f"Resp: {request.user.get_group_session()} ")
-        # request.user.get_group_session()
         user = request.user
         print(f"Usuario obtenido: {user}")
         group = user.get_group_session()
         print(f"Grupos obtenidos: {group}")
-        #group_name = group.name if group else None
         return super().get(request,*args, **kwargs)
-
-        #return super().get(request, group_name=group_name,*args, **kwargs)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['proyectos'] = Proyectos.objects.all().count()
@@ -63,7 +41,15 @@ class HomeTemplateView(LoginRequiredMixin,TemplateView):
         context['capacitadores'] = Clientes.objects.all().count()
         context['inscripciones'] = Inscripciones.objects.all().count()
         context['formatted_datetime'] = format(datetime.now().strftime("%A %d/%m/%Y %H:%M:%S"))
-        #context['formatted_datetime'] = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-        #context['current_group'] = self.request.user.get_current_group(self.request)
-        #context['current_group'] = self.request.session.get('current_group')
+        context['notificaciones'] = Notificaciones.objects.all().order_by('-created_at')[:5] 
         return context
+
+@require_POST
+def marcar_notificacion_leida(request):
+    notificacion_id = request.POST.get('notificacion_id')
+    if notificacion_id:
+        notificacion = Notificaciones.objects.get(id=notificacion_id)
+        notificacion.leido = True
+        notificacion.save()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)

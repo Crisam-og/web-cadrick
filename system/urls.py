@@ -61,6 +61,8 @@ urlpatterns = [
     path('inscripciones/edit/<uuid:pk>/', InscripcionesUpdateView.as_view(), name='inscripciones_update'),  
     path('inscripciones/delete/<uuid:pk>/',  InscripcionesDeleteView.as_view(), name='inscripciones_delete'), 
     path('inscripciones/detalle-inscripcion/<uuid:id>/',  InscripcionDetailView.as_view(), name='inscripciones_detail'),
+    path('inscripciones/count/', InscripcionesCountView.as_view(), name='inscripciones_count'),
+
     
     path('configuraciones/add/', CompaniaCreateView.as_view(), name='compania_create'), 
     path('configuraciones/edit/',  CompaniaUpdateView.as_view(), name='compania_update'),  
@@ -70,6 +72,7 @@ urlpatterns = [
     path('delete-image/<uuid:pk>/', ImageGaleriaDeleteView.as_view(), name='delete_image'),
     
      
+    path('marcar-notificacion-leida/', marcar_notificacion_leida, name='marcar_notificacion_leida'),
 
 
 

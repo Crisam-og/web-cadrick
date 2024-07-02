@@ -31,7 +31,7 @@ class GaleriaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Creat
     form_class = GaleriaForm 
     template_name = 'publicidad/create.html' 
     success_url = reverse_lazy('galeria_update')
-    permission_required = 'add_publicidad'
+    permission_required = 'add_galeria'
     url_redirect = success_url
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -69,8 +69,8 @@ class GaleriaUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Upd
     model = Galeria
     form_class = GaleriaForm
     template_name = 'publicidad/create.html'
-    success_url = reverse_lazy('publicidad_list')
-    permission_required = 'change_publicidad'
+    success_url = reverse_lazy('galeria_update')
+    permission_required = 'change_galeria'
     url_redirect = success_url
 
     def dispatch(self, request, *args, **kwargs):

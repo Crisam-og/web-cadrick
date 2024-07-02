@@ -1,6 +1,7 @@
 from django.forms import *
 from system.models import *
 from system.validators.formatChecker import *
+from django_summernote.widgets import SummernoteWidget
 
 
 class ServiciosForm(ModelForm):
@@ -19,17 +20,15 @@ class ServiciosForm(ModelForm):
                     
                     }
                 ),
-            'descripcion_servicio': Textarea(
+            'descripcion_servicio': SummernoteWidget(
                 attrs={
                     'class': 'form-control',
                     'placeholder': 'Ingrese una descripción', 
-                    'rows': 3,
-                    'cols': 3 
                     }
                 ),
             'servicio_id': Select(
                 attrs={
-                    'class': 'form-control col-3',
+                    'class': 'form-control col-sm-2 control-label',
                     'style': 'width: 100%'
                     }
                 ),

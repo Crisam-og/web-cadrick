@@ -20,7 +20,7 @@
                             <h4>{{ curso.nombre_curso }}</h4>
                         </div>
                         <div class="col-12">
-                            <textarea class="form-control" disabled>{{ curso.descripcion }}</textarea>
+                            <textarea class="form-control" disabled>{{ curso.descripcion | safe }}</textarea>
                            
                         </div>
                     </div>

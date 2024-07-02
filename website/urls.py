@@ -7,6 +7,8 @@ from website.views.inscripciones.views import *
 from website.views.error404.views import *
 from website.views.servicios.views import *
 from website.views.contactanos.views import *
+from website.views.proyectos.views import *
+
 
 from django.contrib.staticfiles.urls import static
 
@@ -18,6 +20,7 @@ urlpatterns = [
     path('cursos/list/', CursoListView.as_view(), name='curso-list'),
     path('cursos/detalle-curso/<uuid:id>/', CursoDetailView.as_view(), name='detail-curso'),
     path('inscripciones/registro/', InscripcionesCreateView.as_view(), name='inscripciones-cursos'),
+    path('proyectos/detalle-proyecto/<uuid:id>/', ProyectoDetailView.as_view(), name='detail-proyecto'),
     path('contactanos/', ContactanosTemplateView.as_view(), name='contactanos'),
     path('error404/', Error404View.as_view(), name='error404'),
 ]
